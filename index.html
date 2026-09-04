@@ -14,8 +14,8 @@
 
     <style>
         :root {
-            --bg-body: #fdfbf5; /* Krem klasik */
-            --primary: #2d6a4f; /* Hijau elegan */
+            --bg-body: #fdfbf5;
+            --primary: #2d6a4f;
             --text-main: #2c3e50;
             --text-muted: #7f8c8d;
             --card-bg: #ffffff;
@@ -31,11 +31,10 @@
             background-color: var(--bg-body);
             margin: 0;
             padding: 0;
-            padding-bottom: 90px; /* Ruang untuk footer cart */
+            padding-bottom: 90px;
             color: var(--text-main);
         }
 
-        /* Header / Logo */
         .header {
             background: var(--card-bg);
             text-align: center;
@@ -57,7 +56,6 @@
             padding: 15px;
         }
 
-        /* Tombol Fullscreen */
         .fullscreen-container {
             text-align: center;
             padding: 15px 15px 0 15px;
@@ -78,7 +76,6 @@
             background: rgba(45, 106, 79, 0.2);
         }
 
-        /* Kategori Menu */
         .category-title {
             color: var(--primary);
             font-size: 1.15rem;
@@ -105,7 +102,6 @@
             line-height: 1.4;
         }
 
-        /* Card Menu Item */
         .menu-item {
             background: var(--card-bg);
             border-radius: 12px;
@@ -144,7 +140,6 @@
             font-size: 0.95rem;
         }
 
-        /* Tombol QTY */
         .cart-controls {
             display: flex;
             align-items: center;
@@ -179,7 +174,6 @@
             color: #1a1a1a;
         }
 
-        /* Info Ketersediaan */
         .platforms {
             background-color: var(--card-bg);
             padding: 15px;
@@ -195,14 +189,21 @@
             margin-bottom: 12px;
             letter-spacing: 0.5px;
         }
+        .platform-logos a {
+            text-decoration: none;
+            display: inline-block;
+        }
         .platform-logos img {
             height: 24px;
             margin: 0 10px;
             vertical-align: middle;
             filter: drop-shadow(0 2px 2px rgba(0,0,0,0.1));
+            transition: transform 0.2s;
+        }
+        .platform-logos a:hover img {
+            transform: scale(1.1);
         }
 
-        /* Sticky Footer Cart */
         .cart-footer {
             position: fixed;
             bottom: 0;
@@ -235,7 +236,7 @@
             color: #1a1a1a;
         }
         .btn-checkout {
-            background: #25D366; /* Hijau WhatsApp */
+            background: #25D366;
             color: white;
             border: none;
             padding: 12px 24px;
@@ -266,15 +267,14 @@
         <img src="logo.png" alt="RiPi Food Logo" onerror="this.src='https://via.placeholder.com/150x60?text=RiPi+Food'">
     </header>
 
-    <!-- Tombol Opsional Fullscreen -->
     <div class="fullscreen-container" id="fs-container">
         <button class="btn-fullscreen" onclick="bukaLayarPenuh()">
-            Layar Penuh
+            Aplikasi Layar Penuh
         </button>
     </div>
 
     <div class="container" id="menu-container">
-        <!-- Menu Rendered by JavaScript -->
+        <!-- Rendered by JavaScript -->
     </div>
 
     <div class="container" style="padding-top: 0;">
@@ -282,7 +282,12 @@
             <div class="platform-title">JUGA TERSEDIA DI:</div>
             <div class="platform-logos">
                 <img src="shopee_food.png" alt="Shopee Food" onerror="this.style.display='none'">
-                <img src="go_food.png" alt="Go Food" onerror="this.style.display='none'">
+                
+                <!-- Link GoFood ditambahkan di sini -->
+                <a href="https://gofood.link/a/TbNNw8S" target="_blank" rel="noopener noreferrer">
+                    <img src="https://lelogama.go-jek.com/service_icon_text/gofood.svg" alt="Go Food" title="Pesan via GoFood" onerror="this.style.display='none'">
+                </a>
+                
                 <img src="grab_food.png" alt="Grab Food" onerror="this.style.display='none'">
             </div>
         </div>
@@ -304,17 +309,15 @@
     </footer>
 
     <script>
-        // Fungsi untuk masuk ke mode layar penuh
         function bukaLayarPenuh() {
             let elem = document.documentElement;
             if (elem.requestFullscreen) {
                 elem.requestFullscreen();
-            } else if (elem.webkitRequestFullscreen) { /* Safari */
+            } else if (elem.webkitRequestFullscreen) {
                 elem.webkitRequestFullscreen();
-            } else if (elem.msRequestFullscreen) { /* IE11 */
+            } else if (elem.msRequestFullscreen) {
                 elem.msRequestFullscreen();
             }
-            // Sembunyikan tombol setelah diklik
             document.getElementById('fs-container').style.display = 'none';
         }
 
@@ -452,5 +455,5 @@
         document.addEventListener('DOMContentLoaded', initMenu);
     </script>
 </body>
-  </html>
-  
+</html>
+
