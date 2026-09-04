@@ -3,7 +3,7 @@ const menuData = [
         category: "ES TELER CREAMY",
         note: "*Isian: Nangka, Alpukat, Cincau, Jelly, Kelapa, Mutiara",
         items: [
-            { id: "tc1", name: "Teler Creamy Small (Tanpa Keju)", desc: "Es Batu dicampur", price: 6000, img: "https://pauple.com/wp-content/uploads/2016/06/preview-icon-1.png" },
+            { id: "tc1", name: "Teler Creamy Small (Tanpa Keju)", desc: "Es Batu dicampur", price: 6000, img: "https://lelogama.go-jek.com/service_icon_text/gofood.svg" },
             { id: "tc2", name: "Teler Creamy Small (+ Keju)", desc: "Es Batu dipisah", price: 8000, img: "https://via.placeholder.com/150x150?text=TC+Small" },
             { id: "tc3", name: "Teler Creamy Reguler", desc: "+ekstra keju, Es Batu Dipisah", price: 12000, img: "https://via.placeholder.com/150x150?text=TC+Reg" },
             { id: "tc4", name: "Teler Creamy Medium", desc: "+ekstra keju, nata de coco, Es Batu Dipisah", price: 17000, img: "https://via.placeholder.com/150x150?text=TC+Med" },
