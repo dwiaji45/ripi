@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Pesan RiPi Food</title>
+    
+    <!-- Meta Tag PWA agar web bisa menjadi "Aplikasi" di HP -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="display" content="standalone">
+    <meta name="theme-color" content="#2d6a4f">
+
+    <style>
+        :root {
+            --bg-body: #fdfbf5; /* Krem klasik */
+            --primary: #2d6a4f; /* Hijau elegan */
+            --text-main: #2c3e50;
+            --text-muted: #7f8c8d;
+            --card-bg: #ffffff;
+        }
+        
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-body);
+            margin: 0;
+            padding: 0;
+            padding-bottom: 90px; /* Ruang untuk footer cart */
+            color: var(--text-main);
+        }
+
+        /* Header / Logo */
+        .header {
+            background: var(--card-bg);
+            text-align: center;
+            padding: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 2px solid var(--primary);
+        }
+        .header img {
+            height: 65px;
+            object-fit: contain;
+        }
+
+        .container {
+            max-width: 550px;
+            margin: 0 auto;
+            padding: 15px;
+        }
+
+        /* Tombol Fullscreen */
+        .fullscreen-container {
+            text-align: center;
+            padding: 15px 15px 0 15px;
+        }
+        .btn-fullscreen {
+            background: rgba(45, 106, 79, 0.1);
+            color: var(--primary);
+            border: 1px solid rgba(45, 106, 79, 0.2);
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+            transition: background 0.2s;
+        }
+        .btn-fullscreen:active {
+            background: rgba(45, 106, 79, 0.2);
+        }
+
+        /* Kategori Menu */
+        .category-title {
+            color: var(--primary);
+            font-size: 1.15rem;
+            font-weight: 800;
+            margin: 15px 0 5px 0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .category-title::after {
+            content: "";
+            flex: 1;
+            height: 2px;
+            background: rgba(45, 106, 79, 0.15);
+            border-radius: 2px;
+        }
+        .category-note {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 15px;
+            font-style: italic;
+            line-height: 1.4;
+        }
+
+        /* Card Menu Item */
+        .menu-item {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.03);
+            border: 1px solid rgba(45, 106, 79, 0.08);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .menu-item:hover {
+            box-shadow: 0 6px 12px rgba(45, 106, 79, 0.08);
+        }
+
+        .menu-info {
+            flex: 1;
+            padding-right: 15px;
+        }
+        .menu-name {
+            font-weight: 700;
+            font-size: 1rem;
+            margin-bottom: 4px;
+            color: #1a1a1a;
+        }
+        .menu-desc {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            line-height: 1.3;
+        }
+        .menu-price {
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 0.95rem;
+        }
+
+        /* Tombol QTY */
+        .cart-controls {
+            display: flex;
+            align-items: center;
+            background: var(--bg-body);
+            border-radius: 8px;
+            padding: 4px;
+            border: 1px solid #e0d8c3;
+        }
+        .btn-qty {
+            background: transparent;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            color: var(--primary);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: background 0.2s;
+        }
+        .btn-qty:active { 
+            background: rgba(45, 106, 79, 0.1); 
+        }
+        .qty-display {
+            font-weight: 700;
+            min-width: 24px;
+            text-align: center;
+            font-size: 1rem;
+            color: #1a1a1a;
+        }
+
+        /* Info Ketersediaan */
+        .platforms {
+            background-color: var(--card-bg);
+            padding: 15px;
+            border-radius: 12px;
+            margin-top: 30px;
+            text-align: center;
+            border: 1px dashed #ccc;
+        }
+        .platform-title {
+            color: #d89614;
+            font-weight: 700;
+            font-size: 0.85rem;
+            margin-bottom: 12px;
+            letter-spacing: 0.5px;
+        }
+        .platform-logos img {
+            height: 24px;
+            margin: 0 10px;
+            vertical-align: middle;
+            filter: drop-shadow(0 2px 2px rgba(0,0,0,0.1));
+        }
+
+        /* Sticky Footer Cart */
+        .cart-footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: var(--card-bg);
+            box-shadow: 0 -4px 15px rgba(0,0,0,0.08);
+            display: flex;
+            justify-content: center;
+            padding: 15px 0;
+            z-index: 1000;
+            border-top: 1px solid #eee;
+        }
+        .cart-container {
+            max-width: 550px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+        .cart-total-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 2px;
+        }
+        .cart-total-value {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: #1a1a1a;
+        }
+        .btn-checkout {
+            background: #25D366; /* Hijau WhatsApp */
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3);
+            transition: transform 0.2s, background 0.2s;
+        }
+        .btn-checkout:active {
+            transform: scale(0.96);
+        }
+        .btn-checkout:disabled {
+            background: #bdc3c7;
+            box-shadow: none;
+            cursor: not-allowed;
+            transform: none;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <img src="logo.png" alt="RiPi Food Logo" onerror="this.src='https://via.placeholder.com/150x60?text=RiPi+Food'">
+    </header>
+
+    <!-- Tombol Opsional Fullscreen -->
+    <div class="fullscreen-container" id="fs-container">
+        <button class="btn-fullscreen" onclick="bukaLayarPenuh()">
+            📱 Buka Aplikasi Layar Penuh
+        </button>
+    </div>
+
+    <div class="container" id="menu-container">
+        <!-- Menu Rendered by JavaScript -->
+    </div>
+
+    <div class="container" style="padding-top: 0;">
+        <div class="platforms">
+            <div class="platform-title">JUGA TERSEDIA DI:</div>
+            <div class="platform-logos">
+                <img src="shopee_food.png" alt="Shopee Food" onerror="this.style.display='none'">
+                <img src="go_food.png" alt="Go Food" onerror="this.style.display='none'">
+                <img src="grab_food.png" alt="Grab Food" onerror="this.style.display='none'">
+            </div>
+        </div>
+    </div>
+
+    <footer class="cart-footer">
+        <div class="cart-container">
+            <div>
+                <div class="cart-total-label">Total Pembayaran:</div>
+                <div class="cart-total-value" id="total-price">Rp 0</div>
+            </div>
+            <button class="btn-checkout" id="btn-checkout" onclick="checkoutWA()" disabled>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/>
+                </svg>
+                Pesan Sekarang
+            </button>
+        </div>
+    </footer>
+
+    <script>
+        // Fungsi untuk masuk ke mode layar penuh
+        function bukaLayarPenuh() {
+            let elem = document.documentElement;
+            if (elem.requestFullscreen) {
+                elem.requestFullscreen();
+            } else if (elem.webkitRequestFullscreen) { /* Safari */
+                elem.webkitRequestFullscreen();
+            } else if (elem.msRequestFullscreen) { /* IE11 */
+                elem.msRequestFullscreen();
+            }
+            // Sembunyikan tombol setelah diklik
+            document.getElementById('fs-container').style.display = 'none';
+        }
+
+        const menuData = [
+            {
+                category: "ES TELER CREAMY",
+                note: "*Isian: Nangka, Alpukat, Cincau, Jelly, Kelapa, Mutiara",
+                items: [
+                    { id: "tc1", name: "Teler Creamy Small (Tanpa Keju)", desc: "Es Batu dicampur", price: 6000 },
+                    { id: "tc2", name: "Teler Creamy Small (+ Keju)", desc: "Es Batu dipisah", price: 8000 },
+                    { id: "tc3", name: "Teler Creamy Reguler", desc: "+ekstra keju, Es Batu Dipisah", price: 12000 },
+                    { id: "tc4", name: "Teler Creamy Medium", desc: "+ekstra keju, nata de coco, Es Batu Dipisah", price: 17000 },
+                    { id: "tc5", name: "Teler Creamy Jumbo", desc: "+ekstra keju, nata de coco, Es Batu Dipisah", price: 25000 },
+                    { id: "tc6", name: "Spesial Alpukat", desc: "+ekstra keju, nata de coco, alpukat shake, Es Batu Dipisah", price: 23000 },
+                    { id: "tc7", name: "Spesial Nangka", desc: "+ekstra keju, nata de coco, nangka blend, Es Batu Dipisah", price: 24000 }
+                ]
+            },
+            {
+                category: "ES TELER JADOEL",
+                note: "*Kuah segar & gula aren legit! Isian: Nangka, Alpukat, Cincau, Kelapa, Nata de Coco",
+                items: [
+                    { id: "tj1", name: "Es Teler Jadoel Reguler", desc: "Original jadoel", price: 10000 },
+                    { id: "tj2", name: "Es Teler Jadoel Medium", desc: "+ekstra keju", price: 16000 }
+                ]
+            },
+            {
+                category: "EKSTRA TOPPING",
+                note: "Tambahan manis dan isian sesuai selera",
+                items: [
+                    { id: "tp1", name: "Gula Putih", desc: "", price: 1000 },
+                    { id: "tp2", name: "Gula Aren", desc: "", price: 2000 },
+                    { id: "tp3", name: "Topping Keju", desc: "", price: 1500 },
+                    { id: "tp4", name: "Nata De Coco", desc: "", price: 1500 },
+                    { id: "tp5", name: "Topping Nangka", desc: "", price: 2000 },
+                    { id: "tp6", name: "Topping Alpukat", desc: "", price: 2000 }
+                ]
+            }
+        ];
+
+        let cart = {}; 
+        let allProducts = {}; 
+
+        function formatRupiah(number) {
+            return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(number);
+        }
+
+        function initMenu() {
+            const container = document.getElementById('menu-container');
+            
+            menuData.forEach(category => {
+                const titleWrapper = document.createElement('div');
+                titleWrapper.innerHTML = `
+                    <div class="category-title">${category.category}</div>
+                    ${category.note ? `<div class="category-note">${category.note}</div>` : ''}
+                `;
+                container.appendChild(titleWrapper);
+
+                category.items.forEach(item => {
+                    allProducts[item.id] = item; 
+                    cart[item.id] = 0; 
+
+                    const menuItem = document.createElement('div');
+                    menuItem.className = 'menu-item';
+                    menuItem.innerHTML = `
+                        <div class="menu-info">
+                            <div class="menu-name">${item.name}</div>
+                            ${item.desc ? `<div class="menu-desc">${item.desc}</div>` : ''}
+                            <div class="menu-price">${formatRupiah(item.price)}</div>
+                        </div>
+                        <div class="cart-controls">
+                            <button class="btn-qty" onclick="updateCart('${item.id}', -1)">−</button>
+                            <span class="qty-display" id="qty-${item.id}">0</span>
+                            <button class="btn-qty" onclick="updateCart('${item.id}', 1)">+</button>
+                        </div>
+                    `;
+                    container.appendChild(menuItem);
+                });
+            });
+        }
+
+        function updateCart(id, change) {
+            let newQty = cart[id] + change;
+            if (newQty < 0) newQty = 0;
+            
+            cart[id] = newQty;
+            document.getElementById(`qty-${id}`).innerText = newQty;
+            
+            calculateTotal();
+        }
+
+        function calculateTotal() {
+            let totalPrice = 0;
+            let totalItems = 0;
+
+            for (const id in cart) {
+                if (cart[id] > 0) {
+                    totalPrice += cart[id] * allProducts[id].price;
+                    totalItems += cart[id];
+                }
+            }
+
+            document.getElementById('total-price').innerText = formatRupiah(totalPrice);
+            
+            const btnCheckout = document.getElementById('btn-checkout');
+            if (totalItems > 0) {
+                btnCheckout.removeAttribute('disabled');
+            } else {
+                btnCheckout.setAttribute('disabled', 'true');
+            }
+        }
+
+        function checkoutWA() {
+            const phoneNumber = "62816847468";
+            let textMessage = "Halo Kak, saya mau order RiPi Food dong:\n\n";
+            let totalPrice = 0;
+
+            for (const id in cart) {
+                if (cart[id] > 0) {
+                    const item = allProducts[id];
+                    const itemTotal = cart[id] * item.price;
+                    totalPrice += itemTotal;
+                    textMessage += `▪️ ${cart[id]}x ${item.name} (${formatRupiah(itemTotal)})\n`;
+                }
+            }
+
+            textMessage += `\n*Total Order: ${formatRupiah(totalPrice)}*`;
+            textMessage += `\n\nTolong konfirmasi ya, terima kasih!`;
+
+            const encodedMessage = encodeURIComponent(textMessage);
+            const waUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+            
+            window.open(waUrl, '_blank');
+        }
+
+        document.addEventListener('DOMContentLoaded', initMenu);
+    </script>
+</body>
+  </html>
+  
