@@ -1,0 +1,22 @@
+{
+  "name": "RiPi Food Order",
+  "short_name": "RiPi Food",
+  "description": "Pesan menu segar RiPi Food",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#fdfbf5",
+  "theme_color": "#2d6a4f",
+  "icons": [
+    {
+      "src": "logo.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
+
